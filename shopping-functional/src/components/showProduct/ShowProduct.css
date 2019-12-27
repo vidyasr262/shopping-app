@@ -5,6 +5,14 @@ i.fa.fa-heart-o {
     right: 0;
     padding: 10px;
 }
+i.fa.fa-heart {
+    font-size: 23px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    color: red;
+}
 .p {
     display: block; margin: auto; max-width: 100%;
 }

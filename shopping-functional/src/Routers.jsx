@@ -9,6 +9,7 @@ import AddProducts from './components/addProduct/AddProducts'
 import ShowProducts from './components/showProduct/ShowProducts'
 import MyWishList from './components/myWishList/MyWishList'
 import MyCartList from './components/myCart/MyCartList'
+import MyProfile from './components/myProfile/MyProfile'
 
 
 
@@ -35,7 +36,9 @@ export default function Routers() {
                                         if (context.login) {
                                             return (
                                                 <>
-                                                    
+                                                     <li className="nav-item">
+                                                        <Link to='/myprofile' className="nav-link text-white">My Profile</Link>
+                                                    </li>
                                                     <li className="nav-item">
                                                         <Link to='/addproducts' className="nav-link text-white">Add Products</Link>
                                                     </li>
@@ -89,6 +92,7 @@ export default function Routers() {
             <Route path='/showproducts' component={ShowProducts} />
             <Route path='/mycartlist' component={MyCartList} />
             <Route path='/mywishlist' component={MyWishList} />
+            <Route path='/myprofile' component={MyProfile} />
            <Route path='/register' component={Register} />
             <Route path='/login' component={Login} />
 

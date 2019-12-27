@@ -8,7 +8,9 @@ import ShowInput from './ShowInput'
 export default function ShowProducts() {
 
     const [products, setProducts] = useState([])
-    const [selectedData, setSelected] = useState([])
+    const [selectedData, setSelected] = useState({ allselect: [] })
+
+    const [wish, setWish] = useState(true)
 
     useEffect(() => {
 
@@ -27,7 +29,8 @@ export default function ShowProducts() {
                 let account = response.data[key]
                 fetchAccount.push({
                     ...account,
-                    id: key
+                    id: key,
+
 
                 }
                 )
@@ -52,16 +55,19 @@ export default function ShowProducts() {
         let newData = []
         for (let key in filterData) {
             newData.push({
-                ...filterData[key]
+                ...filterData[key],
+                click: !wish
             })
             console.log("dataaaa ", newData)
 
             if (filterData) {
 
-                setSelected(newData)
+                setSelected({
+                    allselect: newData
+                })
                 console.log("data selected ", selectedData)
             } else {
-                setSelected([])
+                setSelected({ allselect: [] })
             }
 
 
@@ -70,19 +76,92 @@ export default function ShowProducts() {
 
     // Add Cart
     const addCart = (val) => {
-        const url = 'https://shopping-22a16.firebaseio.com/addcart.json'
-        Axios.post(url, val)
-        .then((response) => {
-            console.log("Success cart", response)
+        console.log("addcart val ", val.id)
+        const id = val.id
+        let filter = products.filter(value => value.id.includes(val.id))
+        console.log("addcart filter ", filter)
 
-            if (response.status === 200) {
-                console.log("Successfully added ", response)
-                
+        const url = 'https://shopping-22a16.firebaseio.com/addcart/.json'
+        Axios.post(url, val)
+            .then((response) => {
+                console.log("Success cart", response)
+
+                if (response.status === 200) {
+                    console.log("Successfully added ", response)
+
+                }
+            }).catch((err) => {
+                console.log("Error message ", err)
+            })
+
+    }
+
+
+    // Add Wishlist
+    const addWish = (val) => {
+        console.log("addwish val ", val.id)
+
+        let w = selectedData.allselect;
+        w.map((e) => {
+            if (e.id === val.id) {
+                return val.click = !val.wish
             }
-        }).catch((err) => {
-            console.log("Error message ", err)
+            return val
+        })
+        setSelected({
+            allselect: w
         })
 
+
+
+        let filter = products.filter(value => value.id.includes(val.id))
+        console.log("addwish filter ", filter)
+
+        const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
+        Axios.post(url, val)
+            .then((response) => {
+                console.log("Success wishlist", response)
+
+                if (response.status === 200) {
+                    console.log("Successfully added ", response)
+                    //                     setWish({
+                    //                         wish: true
+                    //                     })
+                    // console.log("wish", wish)
+                }
+            }).catch((err) => {
+                console.log("Error message ", err)
+            })
+
+    }
+
+    // remove wish
+    const removeWish = async (accToDelete) => {
+        console.log("delete data", accToDelete)
+        const id = accToDelete.id;
+        console.log("my id ", id)
+        const url = 'https://shopping-22a16.firebaseio.com/addwishlist/' + id + '/.json'
+
+        try {
+            const response = await Axios.delete(url)
+
+            const myAccounts = [...products]           // In UI for deleting
+            console.log("myaccounts ", myAccounts)
+
+            const index = myAccounts.indexOf(accToDelete)
+            myAccounts.splice(index, 1)
+            setProducts(myAccounts)
+            setWish({
+                wish: false
+            })
+            console.log("wish", wish)
+            //Unless, until it is required to do make unnecessary calls to server  // for deleting
+            //this.getAllAccount()
+
+            console.log("Response ", response)
+        } catch (error) {
+            console.log('Error ', error)
+        }
     }
 
 
@@ -96,21 +175,22 @@ export default function ShowProducts() {
                 <ShowInput getInput={inputData} />
 
                 <div className="row">
-                    {selectedData.map((val) => {
+                    {selectedData.allselect.map((val) => {
                         // {products.allproducts.map((val) => {
                         return (
 
                             <div className="col-sm-6 col-md-3 ">
                                 <div className="card my-3" >
                                     <div key={val.id} >
-                                        <i class="fa fa-heart-o"></i>
+                                        {!val.click ? <i className="fa fa-heart-o" onClick={() => addWish(val)}></i>
+                                            : <i className="fa fa-heart" onClick={() => removeWish(val)}></i>}
+
                                         <div className="card-header text-center"><img src={val.image} className="p" max-width="200px" height="170px" /></div>
                                         <div className="card-body">
                                             {/* <i class="fa fa-heart"></i> */}
                                             <div>{val.productName}</div>
                                             <div className="">Brand: {val.brand}</div>
-                                            <div className="float-left mr-4">₹ {val.price}</div>
-                                            <div className="ml-4">Quantity: {val.quantity}</div>
+                                            <div className="">₹ {val.price}</div>
                                             <div className="text-center py-3"><button className="btn btn-primary" onClick={() => addCart(val)}>Add Cart</button></div>
                                         </div>
                                     </div>

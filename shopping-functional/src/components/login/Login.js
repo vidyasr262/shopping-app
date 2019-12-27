@@ -1,6 +1,9 @@
 import React, { useState, useContext } from 'react'
 import UserContext from '../../context/userContext'
 import Axios from 'axios';
+import ProductContext, { ProductProvider } from '../../context/productContext';
+import MyProfile from '../myProfile/MyProfile';
+
 
 export default function Login(props) {
     const [emailId, setEmailId] = useState('')
@@ -8,11 +11,16 @@ export default function Login(props) {
     const [showEmailId, setShowEmailId] = useState(false)
     const [showPassWord, setShowPassWord] = useState(false)
 
+    // const [arr, setArr] = useState({array: []})
+    const [arr, setArr] = useState()
+
+ 
     
 const loginData = {
     emailId: emailId,
     passWord: passWord
 }
+let array=""
 
   const  handleSubmit = (event) => {
         event.preventDefault();
@@ -26,11 +34,20 @@ const loginData = {
             for (let key in response.data) {
                 let account = response.data[key]
                 console.log("account data ", account.emailId)
+                console.log("name ", account.userName)
                 console.log("current state ", emailId)
 
                 if ((account.emailId === emailId) && (account.passWord === passWord)) {
                     console.log("success")
+                    console.log("Account ", account.emailId)
+                    array=account.emailId
+                    setArr({
+                        ...arr,
+                        array:account
+                    })
+                     console.log("login ", arr)
                     props.history.push('/showproducts')
+                      
                     context.validation(true)
 
                 } else {
@@ -50,8 +67,13 @@ const loginData = {
 
     const context = useContext(UserContext)
     return (
-       
+
         <div>
+{/* <ProductProvider value={arr}>
+    <MyProfile  action="yu"/>
+    </ProductProvider> */}
+{/* <MyProfile  action="hel"/> */}
+
                 <div className="col-md-4 col-sm-6 offset-md-4 offset-sm-4 mt-4 p-3 rounded" style={{ backgroundColor: "#27273c30" }}>
                     <h1 className="text-center">Login</h1>
 

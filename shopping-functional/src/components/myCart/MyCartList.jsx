@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import Axios from 'axios';
+import CartOrder from './CartOrder';
 
 
 export default function MyCartList() {
 
-    const [products, setProducts] = useState([])
-const [accounts, setAccounts] = useState([])
+    const [products, setProducts] = useState({ all: [] })
+    const [accounts, setAccounts] = useState([])
+    const [quantity, setQuntity] = useState('')
 
     useEffect(() => {
 
@@ -31,9 +33,11 @@ const [accounts, setAccounts] = useState([])
                 }
                 )
                 console.log("account ", account)
-                console.log("Fetch account ", fetchAccount)
-                setProducts(fetchAccount)
-                console.log("account alllll ", products)
+                console.log("Fetch account ", fetchAccount.length)
+                setProducts({
+                    all: fetchAccount
+                })
+                console.log("account alllll ", products.all)
             }
 
         })
@@ -43,21 +47,24 @@ const [accounts, setAccounts] = useState([])
 
     }
 
-    const  deleAccount = async (accToDelete) => {
+    const deleAccount = async (accToDelete) => {
         console.log("delete data", accToDelete)
         const id = accToDelete.id;
+        console.log("my id ", id)
         const url = 'https://shopping-22a16.firebaseio.com/addcart/' + id + '/.json'
 
         try {
             const response = await Axios.delete(url)
 
-            const myAccounts = [...accounts]           // In UI for deleting
+            const myAccounts = [...products.all]           // In UI for deleting
+            console.log("myaccounts ", myAccounts)
+
             const index = myAccounts.indexOf(accToDelete)
             myAccounts.splice(index, 1)
-            setAccounts({
-                accounts: myAccounts
+            setProducts({
+                all: myAccounts
             })
-        
+
 
             //Unless, until it is required to do make unnecessary calls to server  // for deleting
             //this.getAllAccount()
@@ -69,7 +76,7 @@ const [accounts, setAccounts] = useState([])
     }
 
 
-
+let total = 0;
     return (
         <div>
             <div className="container my-4">
@@ -79,11 +86,11 @@ const [accounts, setAccounts] = useState([])
 
 
                 <div className="row">
-                    {products.map((val) => {
+                    {products.all.map((val) => {
                         // {products.allproducts.map((val) => {
                         return (
 
-                            <div className="col-sm-6 col-md-3 ">
+                            <div className="col-sm-6 col-md-6 ">
                                 <div className="card my-3" >
                                     <div key={val.id} >
                                         {/* <i class="fa fa-heart-o"></i> */}
@@ -91,8 +98,16 @@ const [accounts, setAccounts] = useState([])
                                         <div className="card-body">
                                             <div>{val.productName}</div>
                                             <div className="">Brand: {val.brand}</div>
-                                            <div className="float-left mr-4">₹ {val.price}</div>
-                                            <div className="ml-4">Quantity: {val.quantity}</div>
+                                            <div className="">₹ {val.price}</div>
+                                            {/* <div className="">Quantity: {val.quantity}</div> */}
+                                            <div>Quantity:</div>
+                                            <select name="select" onChange={(e)=>setQuntity(e.target.value)} className="my-3">
+                                                <option value="">--Select--</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                            </select>
+                                          <p style={{display: "block"}}>  {total = Number(val.price)*Number(quantity) }</p>
                                             <div><button className="btn bg-danger" onClick={() => deleAccount(val)}>Delete</button></div>
                                         </div>
                                     </div>
@@ -102,7 +117,12 @@ const [accounts, setAccounts] = useState([])
 
                         )
                     })}
+                    <div className="col-sm-6 col-md-6 ">
+                        <CartOrder action={products.all.length} a={total}/>
+                    </div>
                 </div>
+
+                <button className="btn btn-success">Place order</button>
             </div>
         </div>
     )
