@@ -1,0 +1,8 @@
+.nav-link {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+a.text-warning:hover {
+    color: #fff !important;
+}

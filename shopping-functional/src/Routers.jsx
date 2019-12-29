@@ -10,15 +10,14 @@ import ShowProducts from './components/showProduct/ShowProducts'
 import MyWishList from './components/myWishList/MyWishList'
 import MyCartList from './components/myCart/MyCartList'
 import MyProfile from './components/myProfile/MyProfile'
-
-
+import './App.css';
 
 export default function Routers() {
     const context = useContext(UserContext)
     return (
         <div>
             <div>
-                <nav className="navbar navbar-expand-md bg-dark navbar-dark ">
+                <nav className="navbar navbar-expand-md bg-primary navbar-dark ">
 
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span className="navbar-toggler-icon"></span>
@@ -33,29 +32,58 @@ export default function Routers() {
                             <UserConsumer>
                                 {
                                     (context) => {
+                                       console.log("navigation ", context.login) 
                                         if (context.login) {
+
+                                            if (context.userlogin) {
                                             return (
                                                 <>
                                                      <li className="nav-item">
-                                                        <Link to='/myprofile' className="nav-link text-white">My Profile</Link>
+                                                        <Link to='/myprofile' className="nav-link text-white px-3">My Profile</Link>
+                                                    </li>
+                                                   
+                                                    <li className="nav-item">
+                                                        <Link to='/showproducts' className="nav-link text-white px-3">Show Products</Link>
                                                     </li>
                                                     <li className="nav-item">
-                                                        <Link to='/addproducts' className="nav-link text-white">Add Products</Link>
+                                                        <Link to='/mywishlist' className="nav-link text-white px-3">My Wishlist</Link>
                                                     </li>
                                                     <li className="nav-item">
-                                                        <Link to='/showproducts' className="nav-link text-white">Show Products</Link>
+                                                        <Link to='/mycartlist' className="nav-link text-white px-3">My Cart</Link>
                                                     </li>
-                                                    <li className="nav-item">
-                                                        <Link to='/mywishlist' className="nav-link text-white">My Wishlist</Link>
+                                                    {/* <div className="ml-auto d-flex"> */}
+                                                    <li className="nav-item" style={{position: "absolute", right: "2%" }}>
+                                                        <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
                                                     </li>
-                                                    <li className="nav-item">
-                                                        <Link to='/mycartlist' className="nav-link text-white">My Cart</Link>
-                                                    </li>
-                                                    <li className="nav-item ">
-                                                        <Link to='/' onClick={() => context.validation(false)} className="nav-link text-white">Logout</Link>
-                                                    </li>
+                                                    
                                                 </>
                                             )
+                                            } else {
+                                                return (
+                                                    <>
+                                                         <li className="nav-item">
+                                                            <Link to='/myprofile' className="nav-link text-white px-3">My Profile</Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link to='/addproducts' className="nav-link text-white px-3">Add Products</Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link to='/showproducts' className="nav-link text-white px-3">Show Products</Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link to='/mywishlist' className="nav-link text-white px-3">My Wishlist</Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link to='/mycartlist' className="nav-link text-white px-3">My Cart</Link>
+                                                        </li>
+                                                        {/* <div className="ml-auto d-flex"> */}
+                                                        <li className="nav-item" style={{position: "absolute", right: "2%" }}>
+                                                            <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
+                                                        </li>
+                                                        
+                                                    </>
+                                                )
+                                            }
                                         }
                                         else {
                                             return (
@@ -79,22 +107,31 @@ export default function Routers() {
                 </nav>
 
             </div>
-            {/* {context.login? <><Route exact path='/' component={Home} />
-            <Route path='/viewaccount' component={ViewAccount} />
-            <Route path='/addproducts' component={AddProducts} />
-            <Route path='/showproducts' component={ShowProducts} /></>:
-           <> <Route path='/register' component={Register} />
-            <Route path='/login' component={Login} /></>} */}
-
-         <Route exact path='/' component={Home} />
+           
+  {/* {context.login?  <>  
             <Route path='/viewaccount' component={ViewAccount} />
             <Route path='/addproducts' component={AddProducts} />
             <Route path='/showproducts' component={ShowProducts} />
             <Route path='/mycartlist' component={MyCartList} />
             <Route path='/mywishlist' component={MyWishList} />
-            <Route path='/myprofile' component={MyProfile} />
-           <Route path='/register' component={Register} />
-            <Route path='/login' component={Login} />
+            <Route path='/myprofile' component={MyProfile} />  </> :
+       <>    <Route exact path='/' component={Home} />
+             <Route path='/register' component={Register} />
+            <Route path='/login' component={Login} />  </>}
+
+           
+ */}
+
+ 
+{context.login ? <>   <Route path='/viewaccount' component={ViewAccount} />
+            <Route path='/addproducts' component={AddProducts} />
+            <Route path='/showproducts' component={ShowProducts} />
+            <Route path='/mycartlist' component={MyCartList} />
+            <Route path='/mywishlist' component={MyWishList} />
+            <Route path='/myprofile' component={MyProfile} />  </>:null} 
+            <Route exact path='/' component={Home} />
+             <Route path='/register' component={Register} />
+            <Route path='/login' component={Login} /> 
 
             {/* </Router> */}
 

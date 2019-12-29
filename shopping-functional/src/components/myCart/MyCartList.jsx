@@ -8,7 +8,7 @@ export default function MyCartList() {
 
     const [products, setProducts] = useState({ all: [] })
     const [accounts, setAccounts] = useState([])
-    const [quantity, setQuntity] = useState('')
+    // const [quantity, setQuntity] = useState('')
 
     useEffect(() => {
 
@@ -28,12 +28,14 @@ export default function MyCartList() {
                 let account = response.data[key]
                 fetchAccount.push({
                     ...account,
-                    id: key
+                    id: key,
+                    qun: null,
+                    total: account.price
 
                 }
                 )
                 console.log("account ", account)
-                console.log("Fetch account ", fetchAccount.length)
+                console.log("Fetch account ", fetchAccount.qun)
                 setProducts({
                     all: fetchAccount
                 })
@@ -76,53 +78,66 @@ export default function MyCartList() {
     }
 
 
-let total = 0;
+    //Qunatity 
+
+    let quntityChange = (Q, V) => {
+        let allData = products.all
+        allData.map((val) => {
+            if (val.id === V.id) {
+                return (
+                    V.noq = Q,
+                    V.total = Q * V.price)
+            }
+        })
+        setProducts({ all: allData })
+    }
+    let totalAmount = 0;
+    let ttl = 0;
+
     return (
         <div>
             <div className="container my-4">
 
-                <h2 className="p-4 text-primary text-center">MyCart</h2>
-
-
-
+                <h2 className="p-4  text-center">MyCart List</h2>
                 <div className="row">
-                    {products.all.map((val) => {
-                        // {products.allproducts.map((val) => {
-                        return (
 
-                            <div className="col-sm-6 col-md-6 ">
+                    <div className="col-sm-6 col-md-6 ">
+                        {products.all.map((val) => {
+                            return (
                                 <div className="card my-3" >
-                                    <div key={val.id} >
+                                    <div className="row" key={val.id} >
                                         {/* <i class="fa fa-heart-o"></i> */}
-                                        <div className="card-header text-center"><img src={val.image} className="p" max-width="200px" height="170px" /></div>
-                                        <div className="card-body">
+                                        <div className="col-sm-12 col-md-6 card-header text-center"><img src={val.image} className="p" max-width="200px" height="170px" /></div>
+                                        <div className="col-sm-12 col-md-6 card-body">
                                             <div>{val.productName}</div>
                                             <div className="">Brand: {val.brand}</div>
                                             <div className="">₹ {val.price}</div>
                                             {/* <div className="">Quantity: {val.quantity}</div> */}
                                             <div>Quantity:</div>
-                                            <select name="select" onChange={(e)=>setQuntity(e.target.value)} className="my-3">
-                                                <option value="">--Select--</option>
+                                            <select name="select" onChange={(e) => {quntityChange(e.target.value, val)}} value={val.qun} className="my-1">
+                                                {/* <option value="">--Select--</option> */}
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
                                             </select>
-                                          <p style={{display: "block"}}>  {total = Number(val.price)*Number(quantity) }</p>
-                                            <div><button className="btn bg-danger" onClick={() => deleAccount(val)}>Delete</button></div>
+                                            <p className='card-text'><strong>Total Amount: {val.total}</strong></p>
+
+                                            {/* <p style={{ display: "block" }}>  {total = Number(val.price) * Number(quantity)}</p> */}
+                                            <p style={{ display: "none" }}>  {totalAmount = totalAmount + Number(val.total), ttl = ttl + Number(val.price)}</p>
+                                            <div><button className="btn bg-danger" onClick={() => deleAccount(val)}>Remove</button></div>
                                         </div>
                                     </div>
 
                                 </div>
-                            </div>
-
-                        )
-                    })}
-                    <div className="col-sm-6 col-md-6 ">
-                        <CartOrder action={products.all.length} a={total}/>
+                            )
+                        })}
                     </div>
+                    <div className="col-sm-6 col-md-6 ">
+                        <CartOrder action={products.all.length} a={ttl} b={totalAmount}/>
+                        <button className="btn btn-warning my-4">Place order</button>
+                    </div>
+                    {/* <button className="btn btn-success">Place order</button> */}
                 </div>
-
-                <button className="btn btn-success">Place order</button>
             </div>
         </div>
     )

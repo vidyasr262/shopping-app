@@ -113,7 +113,6 @@ export default function ShowProducts() {
         })
 
 
-
         let filter = products.filter(value => value.id.includes(val.id))
         console.log("addwish filter ", filter)
 
@@ -170,7 +169,7 @@ export default function ShowProducts() {
         <div>
             <div className="container my-4">
 
-                <h2 className="p-4 text-primary text-center">Product Lists</h2>
+                <h2 className="p-4 text-center">Product Lists</h2>
 
                 <ShowInput getInput={inputData} />
 
@@ -191,7 +190,7 @@ export default function ShowProducts() {
                                             <div>{val.productName}</div>
                                             <div className="">Brand: {val.brand}</div>
                                             <div className="">₹ {val.price}</div>
-                                            <div className="text-center py-3"><button className="btn btn-primary" onClick={() => addCart(val)}>Add Cart</button></div>
+                                            <div className="text-center py-3"><button className="btn btn-outline-success" onClick={() => addCart(val)}>Add Cart</button></div>
                                         </div>
                                     </div>
 

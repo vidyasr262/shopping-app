@@ -74,7 +74,7 @@ export default function MyWishList() {
         <div>
             <div className="container my-4">
 
-                <h2 className="p-4 text-primary text-center">MyWish List</h2>
+                <h2 className="p-4  text-center">MyWish List</h2>
 
                 <div className="row">
                     {products.all.map((val) => {
@@ -89,9 +89,9 @@ export default function MyWishList() {
                                         <div className="card-body">
                                             <div>{val.productName}</div>
                                             <div className="">Brand: {val.brand}</div>
-                                            <div className="float-left mr-4">₹ {val.price}</div>
-                                            <div className="ml-4">Quantity: {val.quantity}</div>
-                                            <div><button className="btn bg-danger" onClick={() => deleAccount(val)}>Delete</button></div>
+                                            <div className="">₹ {val.price}</div>
+                                        
+                                            <div><button className="btn bg-danger my-3" onClick={() => deleAccount(val)}>Remove</button></div>
                                         </div>
                                     </div>
 
