@@ -14,8 +14,8 @@ export default function MyWishList() {
     let comments = JSON.parse(localStorage.getItem('document'));
 
     const getAllAccounts = () => {
-        // const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
-        const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}.json`
+        const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
+        // const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}.json`
 
         Axios.get(url).then((response) => {
             console.log("Response ", response)
@@ -48,8 +48,8 @@ export default function MyWishList() {
         console.log("delete data", accToDelete)
         const id = accToDelete.id;
         console.log("my id ", id)
-        // const url = 'https://shopping-22a16.firebaseio.com/addwishlist/' + id + '/.json'
-        const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}/${id}.json`
+        const url = 'https://shopping-22a16.firebaseio.com/addwishlist/' + id + '/.json'
+        // const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}/${id}.json`
 
         try {
             const response = await Axios.delete(url)

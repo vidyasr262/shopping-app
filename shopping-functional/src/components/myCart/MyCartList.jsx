@@ -4,7 +4,7 @@ import Axios from 'axios';
 import CartOrder from './CartOrder';
 
 
-export default function MyCartList() {
+export default function MyCartList(props) {
 
     const [products, setProducts] = useState({ all: [] })
     const [accounts, setAccounts] = useState([])
@@ -18,16 +18,19 @@ export default function MyCartList() {
     let comments = JSON.parse(localStorage.getItem('document'));
 
     const getAllAccounts = () => {
-        // const url = 'https://shopping-22a16.firebaseio.com/addcart.json'
-        const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}.json`
+         const url = 'https://shopping-22a16.firebaseio.com/addcart.json'
+        // const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}.json`
 
 
         Axios.get(url).then((response) => {
             console.log("Response ", response)
+            let userId = JSON.parse(localStorage.getItem('userid'));
 
             let fetchAccount = []
             for (let key in response.data) {
                 let account = response.data[key]
+                console.log("data userId ", response.data[key].userId)
+                if(response.data[key].userId === userId){
                 fetchAccount.push({
                     ...account,
                     id: key,
@@ -36,6 +39,7 @@ export default function MyCartList() {
 
                 }
                 )
+            }
                 console.log("account ", account)
                 console.log("Fetch account ", fetchAccount.qun)
                 setProducts({
@@ -55,8 +59,8 @@ export default function MyCartList() {
         console.log("delete data", accToDelete)
         const id = accToDelete.id;
         console.log("my id ", id)
-        // const url = 'https://shopping-22a16.firebaseio.com/addcart/' + id + '/.json'
-        const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}/${id}.json`
+        const url = 'https://shopping-22a16.firebaseio.com/addcart/' + id + '/.json'
+        // const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}/${id}.json`
 
 
         try {
@@ -81,6 +85,14 @@ export default function MyCartList() {
         }
     }
 
+ const   deleteCart = ()=>{
+    products.all.map((val)=> {
+        deleAccount(val)
+
+    })
+
+    props.history.push('./showproducts')
+    }
 
     //Qunatity 
 
@@ -140,7 +152,7 @@ export default function MyCartList() {
                         <CartOrder action={products.all.length} a={ttl} b={totalAmount}/>
                         {/* <button className="btn btn-warning my-4">Place order</button> */}
 
-                        <button type="button" class="btn btn-warning my-4" data-toggle="modal" data-target="#myModal"> Place order</button>
+                        <button type="button" class="btn btn-warning my-4"  data-toggle="modal" data-target="#myModal"> Place order</button>
 
 
 <div class="modal" id="myModal">
@@ -154,7 +166,7 @@ export default function MyCartList() {
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={deleteCart} >Close</button>
       </div>
 
     </div>

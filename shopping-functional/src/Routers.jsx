@@ -12,8 +12,16 @@ import MyCartList from './components/myCart/MyCartList'
 import MyProfile from './components/myProfile/MyProfile'
 import './App.css';
 
-export default function Routers() {
+export default function Routers(props) {
     const context = useContext(UserContext)
+
+    let isTrue = localStorage.getItem("isTrue")
+
+    let logout = (context) => {
+        context.setLogin(false)
+        // props.history.push('/')
+        localStorage.clear()
+    }
     return (
         <div>
             <div>
@@ -36,7 +44,7 @@ export default function Routers() {
                                 {
                                     (context) => {
                                         console.log("navigation ", context.login)
-                                        if (context.login) {
+                                        if (isTrue === 'true') {
 
                                             if (context.userlogin) {
                                                 console.log("navigation2 ", context.userlogin)
@@ -58,7 +66,7 @@ export default function Routers() {
                                                         </li>
                                                         {/* <div className="ml-auto d-flex"> */}
                                                         <li className="nav-item" style={{ position: "absolute", right: "2%" }}>
-                                                            <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
+                                                            <Link to='/' onClick={() => logout(context)} className="nav-link text-warning"><strong>Logout</strong></Link>
                                                         </li>
 
                                                     </>
@@ -83,7 +91,7 @@ export default function Routers() {
                                                         </li>
                                                         {/* <div className="ml-auto d-flex"> */}
                                                         <li className="nav-item" style={{ position: "absolute", right: "2%" }}>
-                                                            <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
+                                                            <Link to='/' onClick={() => logout(context)} className="nav-link text-warning"><strong>Logout</strong></Link>
                                                         </li>
 
                                                     </>
@@ -128,7 +136,7 @@ export default function Routers() {
  */}
 
 
-            {context.login ? <>   <Route path='/viewaccount' component={ViewAccount} />
+            {isTrue ? <>   <Route path='/viewaccount' component={ViewAccount} />
                 <Route path='/addproducts' component={AddProducts} />
                 <Route path='/showproducts' component={ShowProducts} />
                 <Route path='/mycartlist' component={MyCartList} />

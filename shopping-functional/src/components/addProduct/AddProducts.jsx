@@ -79,7 +79,10 @@ export default function AddProducts(props) {
         brand: brand,
         price: price,
         quantity: quantity,
-        image: image
+        image: image,
+        wishList: false,
+        myOrder: false,
+        myCart: false
     }
 
     const saveData = (event) => {

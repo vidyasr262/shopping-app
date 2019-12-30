@@ -18,8 +18,8 @@ export default function ShowProducts() {
 
     }, [])
 
-    let comments = JSON.parse(localStorage.getItem('document'));
-    console.log("localStorage", comments.phoneNumber)
+    // let comments = JSON.parse(localStorage.getItem('document'));
+    // console.log("localStorage", comments.phoneNumber)
 
     const getAllAccounts = () => {
         const url = 'https://shopping-22a16.firebaseio.com/accounts.json'
@@ -36,10 +36,10 @@ export default function ShowProducts() {
 
                 }
                 )
-                console.log("account ", account)
-                console.log("Fetch account ", fetchAccount)
+                // console.log("account ", account)
+                // console.log("Fetch account ", fetchAccount)
                 setProducts(fetchAccount)
-                console.log("account alllll ", products)
+                // console.log("account alllll ", products)
             }
 
         })
@@ -53,21 +53,21 @@ export default function ShowProducts() {
     const inputData = (e) => {
         let data = e;
         let filterData = products.filter(value => value.productName.toLowerCase().match(data))
-        console.log("data ", filterData)
+        // console.log("data ", filterData)
         let newData = []
         for (let key in filterData) {
             newData.push({
                 ...filterData[key],
                 click: !wish
             })
-            console.log("dataaaa ", newData)
+            // console.log("dataaaa ", newData)
 
             if (filterData) {
 
                 setSelected({
                     allselect: newData
                 })
-                console.log("data selected ", selectedData)
+                // console.log("data selected ", selectedData)
             } else {
                 setSelected({ allselect: [] })
             }
@@ -78,15 +78,20 @@ export default function ShowProducts() {
 
     // Add Cart
     const addCart = (val) => {
-        console.log("addcart val ", val.id)
+        let userId = JSON.parse(localStorage.getItem('userid'));
+        console.log("user id...", userId)
+        console.log("addcart val ", val)
         const id = val.id
-        let filter = products.filter(value => value.id.includes(val.id))
-        console.log("addcart filter ", filter)
+       
+        let formData = {
+        ...val,
+            userId: userId
+        }
+        console.log("data object ", formData)
+         const url = 'https://shopping-22a16.firebaseio.com/addcart.json'
+        // const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}.json`
 
-        // const url = 'https://shopping-22a16.firebaseio.com/addcart/.json'
-        const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}.json`
-
-        Axios.post(url, val)
+        Axios.post(url, formData)
             .then((response) => {
                 console.log("Success cart", response)
 
@@ -105,6 +110,15 @@ export default function ShowProducts() {
     const addWish = (val) => {
         console.log("addwish val ", val.id)
 
+        let userId = JSON.parse(localStorage.getItem('userid'));
+        console.log("user id...", userId)
+        const id = val.id
+       
+        let formData = {
+        ...val,
+            userId: userId
+        }
+
         let w = selectedData.allselect;
         w.map((e) => {
             if (e.id === val.id) {
@@ -117,22 +131,16 @@ export default function ShowProducts() {
         })
 
 
-        let filter = products.filter(value => value.id.includes(val.id))
-        console.log("addwish filter ", filter)
+        const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
+        // const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}.json`
 
-        // const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
-        const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}.json`
-
-        Axios.post(url, val)
+        Axios.post(url, formData)
             .then((response) => {
                 console.log("Success wishlist", response)
 
                 if (response.status === 200) {
                     console.log("Successfully added ", response)
-                    //                     setWish({
-                    //                         wish: true
-                    //                     })
-                    // console.log("wish", wish)
+                    
                 }
             }).catch((err) => {
                 console.log("Error message ", err)
@@ -187,7 +195,7 @@ export default function ShowProducts() {
                                 <div className="card my-3" >
                                     <div key={val.id} >
                                         {!val.click ? <i className="fa fa-heart-o" onClick={() => addWish(val)}></i>
-                                            : <i className="fa fa-heart" onClick={() => removeWish(val)}></i>}
+                                            : <i className="fa fa-heart" onClick={() => addWish(val)}></i>}
 
                                         <div className="card-header text-center"><img src={val.image} className="p" max-width="200px" height="170px" /></div>
                                         <div className="card-body">

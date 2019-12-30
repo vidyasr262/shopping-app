@@ -60,34 +60,39 @@ const [show, setshow] = useState(false)
             console.log("Response ", response)
 
             for (let key in response.data) {
-                let account = response.data[key]
-                console.log("account data ", account.emailId)
+                // let account = response.data[key]
+                let account = [];
+                account.push({
+                    ...response.data[key],
+                    userId: key
+                })
+                account.map(val=>{
+                console.log("account map ", val.emailId)
+                      
+               
+                console.log("account data ", account)
                 console.log("current state ", emailId)
 
-                if ((account.emailId === emailId) && (account.passWord === passWord)) {
+                if ((val.emailId === emailId) && (val.passWord === passWord)) {
                    // console.log("success")
                     //console.log("Account ", account)
+                    localStorage.setItem('isTrue', true);
+                    localStorage.setItem('document', JSON.stringify(val));
+                    localStorage.setItem('userid', JSON.stringify(val.userId));
 
-                    localStorage.setItem('document', JSON.stringify(account));
-
-                    if (account.role === 'user') {
+                    if (val.role === 'user') {
                         console.log("user ")
                         props.history.push('/showproducts')
                         context.userLogin(true)
-                        context.setLogin(true)
+                        //context.setLogin(true)
                     } else {
                         console.log("admin")
                         props.history.push('/showproducts')
-                        context.setLogin(true)
+                       // context.setLogin(true)
                         context.userLogin(false)
                     }
 
-                    // console.log("login ", arr)
-
-                    //  props.history.push('/showproducts')
-                    // // props.history.push('/')
-                    // context.setLogin(true)
-
+                   
 
                 } else {
                     console.log("wrong")
@@ -95,6 +100,7 @@ const [show, setshow] = useState(false)
                     // props.history.push('/login')
                     // context.setLogin(false)
                 }
+            })
             }
 
 
