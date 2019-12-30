@@ -65,8 +65,8 @@ const [show, setshow] = useState(false)
                 console.log("current state ", emailId)
 
                 if ((account.emailId === emailId) && (account.passWord === passWord)) {
-                    console.log("success")
-                    console.log("Account ", account)
+                   // console.log("success")
+                    //console.log("Account ", account)
 
                     localStorage.setItem('document', JSON.stringify(account));
 

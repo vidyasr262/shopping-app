@@ -18,6 +18,8 @@ export default function ShowProducts() {
 
     }, [])
 
+    let comments = JSON.parse(localStorage.getItem('document'));
+    console.log("localStorage", comments.phoneNumber)
 
     const getAllAccounts = () => {
         const url = 'https://shopping-22a16.firebaseio.com/accounts.json'
@@ -81,7 +83,9 @@ export default function ShowProducts() {
         let filter = products.filter(value => value.id.includes(val.id))
         console.log("addcart filter ", filter)
 
-        const url = 'https://shopping-22a16.firebaseio.com/addcart/.json'
+        // const url = 'https://shopping-22a16.firebaseio.com/addcart/.json'
+        const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}.json`
+
         Axios.post(url, val)
             .then((response) => {
                 console.log("Success cart", response)
@@ -116,7 +120,9 @@ export default function ShowProducts() {
         let filter = products.filter(value => value.id.includes(val.id))
         console.log("addwish filter ", filter)
 
-        const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
+        // const url = 'https://shopping-22a16.firebaseio.com/addwishlist.json'
+        const url = `https://shopping-22a16.firebaseio.com/addwishlist${comments.phoneNumber}.json`
+
         Axios.post(url, val)
             .then((response) => {
                 console.log("Success wishlist", response)
@@ -154,10 +160,9 @@ export default function ShowProducts() {
                 wish: false
             })
             console.log("wish", wish)
-            //Unless, until it is required to do make unnecessary calls to server  // for deleting
-            //this.getAllAccount()
+        
 
-            console.log("Response ", response)
+
         } catch (error) {
             console.log('Error ', error)
         }

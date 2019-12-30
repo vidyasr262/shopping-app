@@ -15,10 +15,12 @@ export default function MyCartList() {
         getAllAccounts();
 
     }, [])
-
+    let comments = JSON.parse(localStorage.getItem('document'));
 
     const getAllAccounts = () => {
-        const url = 'https://shopping-22a16.firebaseio.com/addcart.json'
+        // const url = 'https://shopping-22a16.firebaseio.com/addcart.json'
+        const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}.json`
+
 
         Axios.get(url).then((response) => {
             console.log("Response ", response)
@@ -53,7 +55,9 @@ export default function MyCartList() {
         console.log("delete data", accToDelete)
         const id = accToDelete.id;
         console.log("my id ", id)
-        const url = 'https://shopping-22a16.firebaseio.com/addcart/' + id + '/.json'
+        // const url = 'https://shopping-22a16.firebaseio.com/addcart/' + id + '/.json'
+        const url = `https://shopping-22a16.firebaseio.com/addcart${comments.phoneNumber}/${id}.json`
+
 
         try {
             const response = await Axios.delete(url)
@@ -134,7 +138,28 @@ export default function MyCartList() {
                     </div>
                     <div className="col-sm-6 col-md-6 ">
                         <CartOrder action={products.all.length} a={ttl} b={totalAmount}/>
-                        <button className="btn btn-warning my-4">Place order</button>
+                        {/* <button className="btn btn-warning my-4">Place order</button> */}
+
+                        <button type="button" class="btn btn-warning my-4" data-toggle="modal" data-target="#myModal"> Place order</button>
+
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      
+      <div class="modal-header">
+        <h4 class="modal-title">Order successfully placed</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
                     </div>
                     {/* <button className="btn btn-success">Place order</button> */}
                 </div>

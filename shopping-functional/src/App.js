@@ -47,7 +47,7 @@ class App extends React.Component {
     setUserLogin=(val)=>{
       this.setState({
         ...this.state,
-        user: val
+        userlogin: val
       })
     }
 

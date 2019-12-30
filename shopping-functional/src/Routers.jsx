@@ -24,6 +24,9 @@ export default function Routers() {
                     </button>
                     <div className="collapse navbar-collapse" id="collapsibleNavbar">
                         <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <h3 className="text-white px-2">Shopping App</h3>
+                            </li>
 
                             <li className="nav-item">
                                 <Link to='/' className="nav-link text-white">Home</Link>
@@ -32,36 +35,38 @@ export default function Routers() {
                             <UserConsumer>
                                 {
                                     (context) => {
-                                       console.log("navigation ", context.login) 
+                                        console.log("navigation ", context.login)
                                         if (context.login) {
 
                                             if (context.userlogin) {
-                                            return (
-                                                <>
-                                                     <li className="nav-item">
-                                                        <Link to='/myprofile' className="nav-link text-white px-3">My Profile</Link>
-                                                    </li>
-                                                   
-                                                    <li className="nav-item">
-                                                        <Link to='/showproducts' className="nav-link text-white px-3">Show Products</Link>
-                                                    </li>
-                                                    <li className="nav-item">
-                                                        <Link to='/mywishlist' className="nav-link text-white px-3">My Wishlist</Link>
-                                                    </li>
-                                                    <li className="nav-item">
-                                                        <Link to='/mycartlist' className="nav-link text-white px-3">My Cart</Link>
-                                                    </li>
-                                                    {/* <div className="ml-auto d-flex"> */}
-                                                    <li className="nav-item" style={{position: "absolute", right: "2%" }}>
-                                                        <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
-                                                    </li>
-                                                    
-                                                </>
-                                            )
+                                                console.log("navigation2 ", context.userlogin)
+
+                                                return (
+                                                    <>
+                                                        <li className="nav-item">
+                                                            <Link to='/myprofile' className="nav-link text-white px-3">My Profile</Link>
+                                                        </li>
+
+                                                        <li className="nav-item">
+                                                            <Link to='/showproducts' className="nav-link text-white px-3">Show Products</Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link to='/mywishlist' className="nav-link text-white px-3">My Wishlist</Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link to='/mycartlist' className="nav-link text-white px-3">My Cart</Link>
+                                                        </li>
+                                                        {/* <div className="ml-auto d-flex"> */}
+                                                        <li className="nav-item" style={{ position: "absolute", right: "2%" }}>
+                                                            <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
+                                                        </li>
+
+                                                    </>
+                                                )
                                             } else {
                                                 return (
                                                     <>
-                                                         <li className="nav-item">
+                                                        <li className="nav-item">
                                                             <Link to='/myprofile' className="nav-link text-white px-3">My Profile</Link>
                                                         </li>
                                                         <li className="nav-item">
@@ -77,10 +82,10 @@ export default function Routers() {
                                                             <Link to='/mycartlist' className="nav-link text-white px-3">My Cart</Link>
                                                         </li>
                                                         {/* <div className="ml-auto d-flex"> */}
-                                                        <li className="nav-item" style={{position: "absolute", right: "2%" }}>
+                                                        <li className="nav-item" style={{ position: "absolute", right: "2%" }}>
                                                             <Link to='/' onClick={() => context.setLogin(false)} className="nav-link text-warning"><strong>Logout</strong></Link>
                                                         </li>
-                                                        
+
                                                     </>
                                                 )
                                             }
@@ -107,8 +112,8 @@ export default function Routers() {
                 </nav>
 
             </div>
-           
-  {/* {context.login?  <>  
+
+            {/* {context.login?  <>  
             <Route path='/viewaccount' component={ViewAccount} />
             <Route path='/addproducts' component={AddProducts} />
             <Route path='/showproducts' component={ShowProducts} />
@@ -122,16 +127,16 @@ export default function Routers() {
            
  */}
 
- 
-{context.login ? <>   <Route path='/viewaccount' component={ViewAccount} />
-            <Route path='/addproducts' component={AddProducts} />
-            <Route path='/showproducts' component={ShowProducts} />
-            <Route path='/mycartlist' component={MyCartList} />
-            <Route path='/mywishlist' component={MyWishList} />
-            <Route path='/myprofile' component={MyProfile} />  </>:null} 
+
+            {context.login ? <>   <Route path='/viewaccount' component={ViewAccount} />
+                <Route path='/addproducts' component={AddProducts} />
+                <Route path='/showproducts' component={ShowProducts} />
+                <Route path='/mycartlist' component={MyCartList} />
+                <Route path='/mywishlist' component={MyWishList} />
+                <Route path='/myprofile' component={MyProfile} />  </> : null}
             <Route exact path='/' component={Home} />
-             <Route path='/register' component={Register} />
-            <Route path='/login' component={Login} /> 
+            <Route path='/register' component={Register} />
+            <Route path='/login' component={Login} />
 
             {/* </Router> */}
 
